@@ -48,10 +48,9 @@ class PasswordManager:
 
 def main():
     password = {
-        "email":"yourmome13245",
-        "emaile":"yourmome132aa45",
-        "emaiaal":"yourmome132adf45",
-        "ema1123il":"your134mome13245"
+        "email":"1235678",
+        "email2":"18273645",
+        "admin":"asdfghjk"
     }
 
     pm = PasswordManager()
