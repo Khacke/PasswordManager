@@ -130,6 +130,7 @@ class App(customtkinter.CTk):
             self.textbox.insert("2.0", "No input")
     
     def on_closing(self, event=0):
+        self.bye = tkinter.messagebox.showinfo(master=self, title="BYE!", message="Thanks for using! Bye!")
         self.destroy()
 
 
