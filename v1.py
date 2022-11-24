@@ -1,5 +1,3 @@
-#! usr/bin/env python3
-
 import customtkinter
 import tkinter
 from tkinter import filedialog
@@ -63,7 +61,7 @@ class PasswordManager:
         return self.password_dict[site]
     
     #opens the file explorer
-    def browse_files():
+    def browse_files(self):
         filename = filedialog.askopenfilename(initialdir = "/",title = "Select a File",filetypes = (("Text files","*.txt*"),("all files","*.*")))
         return filename
 
@@ -72,8 +70,6 @@ class PasswordManager:
 
 class App(customtkinter.CTk):
     
-    pm = PasswordManager
-    pword_base = {"admin":"12345678"}
 
     WIDTH = 780
     HEIGHT = 600
@@ -81,6 +77,8 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         
+        self.pm = PasswordManager()
+
         customtkinter.set_appearance_mode("dark")
         customtkinter.set_default_color_theme("dark-blue")
 
@@ -90,24 +88,25 @@ class App(customtkinter.CTk):
 
         self.frame = customtkinter.CTkFrame(master=self)
 
-        self.lable = customtkinter.CTkLabel(master=self, text="Andris' Password Manager v1.0")
+        self.lable = customtkinter.CTkLabel(master=self, text="Andris' Password Manager v1.0", width=450, height=20)
+        self.lable.pack(pady=10, padx=10)
 
-        self.button1 = customtkinter.CTkButton(master=self, text="Create a new key", command=lambda: App.pm.create_key(App.pm),width=450, height=60)
+        self.button1 = customtkinter.CTkButton(master=self, text="Create a new key", command=lambda: self.pm.create_key(),width=450, height=60)
         self.button1.pack(pady=10, padx=50)
 
-        self.button2 = customtkinter.CTkButton(master=self, text="Load a key", command=lambda: App.pm.load_key(App.pm), width=450, height=60)
+        self.button2 = customtkinter.CTkButton(master=self, text="Load a key", command=lambda: self.pm.load_key(), width=450, height=60)
         self.button2.pack(pady=10, padx=50)
 
-        self.button3 = customtkinter.CTkButton(master=self, text="Create new password file", command=lambda: App.pm.create_password_file(App.pm), width=450, height=60)
+        self.button3 = customtkinter.CTkButton(master=self, text="Create new password file", command=lambda: self.pm.create_password_file(), width=450, height=60)
         self.button3.pack(pady=10, padx=50)
 
-        self.button4 = customtkinter.CTkButton(master=self, text="Load a password file", command=lambda: App.pm.load_password_file(App.pm), width=450, height=60)
+        self.button4 = customtkinter.CTkButton(master=self, text="Load a password file", command=lambda: self.pm.load_password_file(), width=450, height=60)
         self.button4.pack(pady=10, padx=50)
 
-        self.button5 = customtkinter.CTkButton(master=self, text="Add new password",command=self.password_event, width=450, height=60)
+        self.button5 = customtkinter.CTkButton(master=self, text="Add new password",command=lambda: self.password_event(), width=450, height=60)
         self.button5.pack(pady=10, padx=50)
         
-        self.button6 = customtkinter.CTkButton(master=self, text="Get password", command=self.pass_out, width=450, height=60)
+        self.button6 = customtkinter.CTkButton(master=self, text="Get password", command=lambda: self.pass_out(), width=450, height=60)
         self.button6.pack(pady=10, padx=50)
 
         self.textbox = customtkinter.CTkTextbox(master=self, width=450, height=100)
@@ -118,14 +117,14 @@ class App(customtkinter.CTk):
         dialog = tkinter.simpledialog.askstring(title="site", parent=self, prompt="Site")
         if dialog is not None:
             pword = tkinter.simpledialog.askstring(title="Password", parent=self, prompt="Password")
-            App.pm.add_password(PasswordManager, dialog, pword)
+            self.pm.add_password(dialog, pword)
         else:
             return None
     
     def pass_out(self):
         dialog = tkinter.simpledialog.askstring(title="site", parent=self, prompt="Site")
         if dialog is not None:
-            password = App.pm.get_password(PasswordManager)
+            password = self.pm.get_password(dialog)
             self.textbox.insert("2.0", password)
         else:
             self.textbox.insert("2.0", "No input")
@@ -138,7 +137,3 @@ class App(customtkinter.CTk):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
-
-        
-
-
